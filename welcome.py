@@ -32,7 +32,7 @@ def index():
     # gmap.scatter(marker_lats, marker_lngs, 'k', marker=True)
     gmap.heatmap(lats, lngs)
 
-    gmap.draw("templates/index.html")
+    #gmap.draw("templates/index.html")
     return render_template('index.html')
 
 
