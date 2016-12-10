@@ -1,0 +1,13 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: mybluemix.net
+  name: myflaskcf
+  host: myflaskCF
+  disk_quota: 1024M
+  services:
+  - availability-monitoring-auto
+  - myflaskDB
+  - myflaskCF-IoT
+  buildpack: python_buildpack
