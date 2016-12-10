@@ -13,33 +13,30 @@
 # limitations under the License.
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, abort
+import gmplot
 
 app = Flask(__name__)
 
-@app.route('/')
-def Welcome():
-    return app.send_static_file('index.html')
+@app.route("/")
+def index():
 
-@app.route('/myapp')
-def WelcomeToMyapp():
-    return 'Welcome again to my app running on Bluemix!'
 
-@app.route('/api/people')
-def GetPeople():
-    list = [
-        {'name': 'John', 'age': 28},
-        {'name': 'Bill', 'val': 26}
-    ]
-    return jsonify(results=list)
+    gmap = gmplot.GoogleMapPlotter(22.060191, 39.216372, 14)
+    lats = [22.137180, 22.079267, 22.060191, 22.053628, 22.137240, 22.079127, 22.040121, 22.053478, 22.133280,
+            22.0796467, 22.060591, 22.058728, 22.137540, 22.077527, 22.045321, 22.064478]
+    lngs = [39.186157, 39.194130, 39.216372, 39.224843, 39.186657, 39.194820, 39.216752, 39.224342, 39.186157,
+            39.194130, 39.216372, 39.224843, 39.186657, 39.194820, 39.216752, 39.224342]
+    # gmap.plot(lats, lngs, 'cornflowerblue', edge_width=10)
+    # gmap.scatter(more_lats, more_lngs, '#3B0B39', size=40, marker=False)
+    # gmap.scatter(marker_lats, marker_lngs, 'k', marker=True)
+    gmap.heatmap(lats, lngs)
 
-@app.route('/api/people/<name>')
-def SayHello(name):
-    message = {
-        'message': 'Hello ' + name
-    }
-    return jsonify(results=message)
+    gmap.draw("templates/index.html")
+    return render_template('index.html')
 
-port = os.getenv('PORT', '5000')
+
+
+port = os.getenv('PORT', '5001')
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=int(port))
+	app.run(host='0.0.0.0',port=port)
