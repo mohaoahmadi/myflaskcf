@@ -1,53 +1,90 @@
+<!DOCTYPE html>
 <html>
+<link href="/static/bootstrap.min.css" rel="stylesheet" media="screen">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/index">HomePage</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/graph_example">graph <span class="sr-only">(current)</span></a></li>
+        <li><a href="https://myflaskcf.mybluemix.net/">Bluemix</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Useful links <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form navbar-left">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Useful links <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 <head>
-<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-<title>Google Maps - pygmaps </title>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
-<script type="text/javascript">
-	function initialize() {
-		var centerlatlng = new google.maps.LatLng(22.060191, 39.216372);
-		var myOptions = {
-			zoom: 14,
-			center: centerlatlng,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
-var heatmap_points = [
-new google.maps.LatLng(22.137180, 39.186157),
-new google.maps.LatLng(22.079267, 39.194130),
-new google.maps.LatLng(22.060191, 39.216372),
-new google.maps.LatLng(22.053628, 39.224843),
-new google.maps.LatLng(22.137240, 39.186657),
-new google.maps.LatLng(22.079127, 39.194820),
-new google.maps.LatLng(22.040121, 39.216752),
-new google.maps.LatLng(22.053478, 39.224342),
-new google.maps.LatLng(22.133280, 39.186157),
-new google.maps.LatLng(22.079647, 39.194130),
-new google.maps.LatLng(22.060591, 39.216372),
-new google.maps.LatLng(22.058728, 39.224843),
-new google.maps.LatLng(22.137540, 39.186657),
-new google.maps.LatLng(22.077527, 39.194820),
-new google.maps.LatLng(22.045321, 39.216752),
-new google.maps.LatLng(22.064478, 39.224342),
-];
-
-var pointArray = new google.maps.MVCArray(heatmap_points);
-var heatmap;
-heatmap = new google.maps.visualization.HeatmapLayer({
-
-data: pointArray
-});
-heatmap.setMap(map);
-heatmap.set('threshold', 10);
-heatmap.set('radius', 10);
-heatmap.set('opacity', 0.600000);
-heatmap.set('dissipating', true);
-	}
-</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Local Schools</title>
 </head>
-<body style="margin:0px; padding:0px;" onload="initialize()">
-	<div id="map_canvas" style="width: 100%; height: 100%;"></div>
+<body>
+
+<div class="container">
+    {% if pageType=='graph' %}
+    <h1>graph using highcharts</h1>
+    {% else %}
+    <h1>Main page to choose a School</h1>
+    {% endif %}
+    {% for school in schools %}
+    <p><a class="btn btn-primary btn-lg" href="{{school.key}}">{{school.name}}</a></p>
+    {% endfor %}
+</div>
+<div id={{ chartID|safe }} class="chart" style="height: 100px"></div>
+		<script>
+			var chart_id = {{ chartID|safe }}
+			var series = {{ series|safe }}
+			var title = {{ title|safe }}
+			var xAxis = {{ xAxis|safe }}
+			var yAxis = {{ yAxis|safe }}
+			var chart = {{ chart|safe }}
+		</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="../static/graph.js"></script>
+<script type="text/javascript" src="/static/bootstrap.min.js"></script>
 </body>
+
+
 </html>
