@@ -49,4 +49,6 @@ def graph(chartID = 'chart_ID', chart_type = 'bar', chart_height = 350):
 	return render_template('index.html', pageType='graph',chartID=chartID, chart=chart, series=series, title=title, xAxis=xAxis, yAxis=yAxis)
 
 
-app.run(debug=True)
+port = os.getenv('PORT', '5001')
+if __name__ == "__main__":
+	app.run(host='0.0.0.0',port=port)
